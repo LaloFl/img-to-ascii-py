@@ -1,25 +1,34 @@
-from os import read
 from PIL import Image
 import urllib.request as rq
 import numpy as np
 
-#1 char = 40*40 px
-
 def main():
+    #IMG RETRIEVE
     img_url = str(input('url: '))
     if (img_url != ''):
         rq.urlretrieve(img_url, "newimg.jpg")        
     img = Image.open('./img/nerd.jpg', 'r') if img_url == '' else Image.open("newimg.jpg", 'r') 
 
-    chars = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. "
-    #chars = "$@Wobw0Jznf|{?~!:\". "
-    chars = " .:-=+*#%@"
+    #CHARS SELECTION
+    charsets = []
+    charsets.append(" .'`\",:;Il!i><~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@")
+    charsets.append(" .\":!o0@")
+    charsets.append(" .:-=+*#%@")
+    charsets.append(" .+@")
+    print()
+    for i in range(len(charsets)):
+        s = "   <-- recommended" if i == 2 else ""
+        print(f"Charset {i}. {charsets[i]} {s}")
+    selected_chars_idx = int(input('\nSelect the charset you want to use: '))
+    chars = charsets[selected_chars_idx]
+
+    #IMG TO ASCII INFO
     print(f"\nCharacters in use ({len(chars)}): {chars}")
 
     [width, height] = img.size
-    print(f"Dimensions (pixels):\n{width}px*{height}px\n", )
+    print(f"Dimensions (pixels):\n{width}px*{height}px\n")
 
-    px_per_char = int(np.floor((width * 10) / 800))
+    px_per_char = int(np.floor((width * 14) / 1000))
     xChars = int(np.floor(width/px_per_char))
     yChars = int(np.floor(height/px_per_char))
     print(f"Dimensions (chars):\n{xChars}ch*{yChars}ch\nEach char is {px_per_char}px*{px_per_char}px\n")
@@ -27,6 +36,7 @@ def main():
     px_val = list(img.getdata())
     print(f'Pixels:\n{len(px_val)}\n')
 
+    #PROCCESS
     result_chars = [[]]
     for yChar in range(yChars):
         next_row = []
@@ -38,7 +48,6 @@ def main():
                     r=px_val[px_idx][0]
                     g=px_val[px_idx][1]
                     b=px_val[px_idx][2]
-                    #[r, g, b] = px_val[px_idx]
                     rgb_avg = int(np.floor(r+g+b)/3)
                     px_sum += rgb_avg
             px_avg = int(np.floor((px_sum) / (px_per_char*px_per_char)))
@@ -49,6 +58,7 @@ def main():
             next_row.append(result_char)
         result_chars.append(next_row)
     
+    #PRINT RESULT
     for y in range(yChars):
         next_row = result_chars[y]
         for x in range(len(next_row)):
