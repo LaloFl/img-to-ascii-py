@@ -1,6 +1,7 @@
 from PIL import Image
 import urllib.request as rq
 import numpy as np
+import pyperclip
 
 def main():
     #IMG RETRIEVE
@@ -58,11 +59,16 @@ def main():
             next_row.append(result_char)
         result_chars.append(next_row)
     
+    result_string = ""
     #PRINT RESULT
     for y in range(yChars):
         next_row = result_chars[y]
         for x in range(len(next_row)):
-            print(next_row[x], end= '\n' if x==len(next_row)-1 else '')
+            jump_string = '\n' if x==len(next_row)-1 else ''
+            result_string = f"{result_string}{jump_string}{next_row[x]}"
+
+    print(result_string)
+    pyperclip.copy(result_string)
 
 if __name__ == "__main__":
     main()

@@ -1,3 +1,3 @@
 # IMG TO ASCII
 
-_My Attempt on img to ascii with numpy_
+__My Attempt on img to ascii with PIL.Image__
