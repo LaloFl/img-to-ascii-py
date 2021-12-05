@@ -1,13 +1,12 @@
 from PIL import Image
 import urllib.request as rq
 import numpy as np
-import pyperclip
 
 def main():
     #IMG RETRIEVE
     img_url = str(input('url: '))
     if (img_url != ''):
-        rq.urlretrieve(img_url, "newimg.jpg")        
+        rq.urlretrieve(img_url, ("newimg.jpg"))
     img = Image.open('./img/nerd.jpg', 'r') if img_url == '' else Image.open("newimg.jpg", 'r') 
 
     #CHARS SELECTION
@@ -29,7 +28,7 @@ def main():
     [width, height] = img.size
     print(f"Dimensions (pixels):\n{width}px*{height}px\n")
 
-    px_per_char = int(np.floor((width * 14) / 1000))
+    px_per_char = 1 #int(np.floor((width * 14) / 1000))
     xChars = int(np.floor(width/px_per_char))
     yChars = int(np.floor(height/px_per_char))
     print(f"Dimensions (chars):\n{xChars}ch*{yChars}ch\nEach char is {px_per_char}px*{px_per_char}px\n")
@@ -68,7 +67,6 @@ def main():
             result_string = f"{result_string}{jump_string}{next_row[x]}"
 
     print(result_string)
-    pyperclip.copy(result_string)
 
 if __name__ == "__main__":
     main()
